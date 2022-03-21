@@ -1,0 +1,7 @@
+{"properties": [
+  {
+    "name": "solrHostURL",
+    "type": "java.lang.String",
+    "description": "Property for spring.data.solr.host"
+  }  
+]}

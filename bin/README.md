@@ -1,1 +1,0 @@
-# Apache_Solr_Demonstration
