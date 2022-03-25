@@ -11,7 +11,7 @@ import learn.solr.search.documents.CourseDetails;
 import learn.solr.search.repositories.CourseDetailsRepository;
 
 @RestController
-public class CourseJsonSearch {
+public class CourseSearch_Rest {
 
 	@Autowired
 	CourseDetailsRepository courseDetailsRepository;

@@ -1,11 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<DOCTYPE! html>
-<html>
-<title>Index</title>
-<body>
-	<h1>Welcome to Apache Solr Search using Spring Boot Application</h1>
+<%@ include file="common/include.jspf" %>
+<%@ include file="common/header.jspf" %>
+<section id="body">
 	<div>
-		This is index page. This application is used to demonstrate Solr search
+		<h1>This is a spring boot application using Apache Solr for Search</h1> 
 	</div>
-</body>
-</html>
+</section>
+<%@ include file="common/footer.jspf" %>
