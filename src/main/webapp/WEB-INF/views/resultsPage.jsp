@@ -74,7 +74,7 @@
               </span>
             </div>
             <!-- END SEARCH INPUT -->
-            <p>Showing all results matching <b>"${searchTerm}"</b></p>
+            <p>Showing all "${resultsCount}" results matching <b>"${searchTerm}"</b></p>
             
             <div class="padding"></div>
             
