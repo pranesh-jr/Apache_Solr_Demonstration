@@ -15,7 +15,7 @@ import org.springframework.data.solr.repository.config.EnableSolrRepositories;
 		"learn.solr.search.repositories" }, namedQueriesLocation = "classpath:solr_named_queries.properties")
 public class SolrConfigurations {
 
-	@Value("${solrHostURL}")
+	@Value("${spring.data.solr.host}")
 	String solrHostURL;
 
 	@Bean
