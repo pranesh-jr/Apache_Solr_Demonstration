@@ -94,6 +94,11 @@
 			<artifactId>jquery</artifactId>
 			<version>3.6.0</version>
 		</dependency>
+		<!-- Dependency for code QA -->
+		<properties>
+  			<sonar.organization>pranesh-jr</sonar.organization>
+  			<sonar.host.url>https://sonarcloud.io</sonar.host.url>
+		</properties>
 
 
 		<dependency>
