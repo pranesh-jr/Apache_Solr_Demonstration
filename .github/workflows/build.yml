@@ -5,10 +5,8 @@ name: Build_and_Analysis
 
 on:
   push:
-    branches: [ Build_Automation ]
-  pull_request:
-    branches: [ Build_Automation ]
-
+    branches: [ master ]
+    
 jobs:
   build:
 
@@ -33,4 +31,12 @@ jobs:
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
+      
+      #Deploy on Heroku
+    - name: Deploy on Heroku
+      uses: akhileshns/heroku-deploy@v3.12.12
+      with:
+          heroku_api_key: ${{secrets.HEROKU_API_KEY}}
+          heroku_app_name: "Solr-WebFrontend" #Must be unique in Heroku
+          heroku_email: "praneshjr6@gmail.com"
 
