@@ -33,8 +33,4 @@ jobs:
       
     - name: Perform CodeQL Analysis
       uses: github/codeql-action/analyze@v1
-      
-      #SonarQube Code Quality Analysis
-    - name: SonarCloud Scan
-      uses: SonarSource/sonarcloud-github-action@v1.6
 
