@@ -3,8 +3,10 @@ package learn.solr.search.controller;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.servlet.http.HttpSession;
+import javax.servlet.http.HttpServletRequest;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,13 +25,15 @@ import learn.solr.search.repositories.CourseDetailsRepositoryImpl;
 @Controller
 @RequestMapping("/search")
 public class CourseSearch {
+	private static Logger logger = LoggerFactory.getLogger(CourseSearch.class);
+
 	@Autowired
 	CourseDetailsRepository courseDetailsRepo;
 	@Autowired
 	CourseDetailsRepositoryImpl courseDetailsCustomRepo;
 
 	@RequestMapping(value = "/All")
-	public String listAllRecords(HttpSession session, ModelMap map) {
+	public String listAllRecords(HttpServletRequest request, ModelMap map) {
 		List<CourseDetails> courseDetailsList = new ArrayList<>();
 		for (CourseDetails courseDetail : this.courseDetailsRepo.findAll()) {
 			courseDetailsList.add(courseDetail);
@@ -40,7 +44,8 @@ public class CourseSearch {
 	}
 
 	@RequestMapping(value = "/")
-	public String searchAllFields(@RequestParam("term") String term, ModelMap map) {
+	public String searchAllFields(@RequestParam("term") String term, HttpServletRequest request, ModelMap map) {
+		logger.debug("Requested URI: {} and Query String: {}", request.getRequestURI(), request.getQueryString());
 		List<CourseDetails> courseDetailsList = new ArrayList<>();
 		for (CourseDetails courseDetail : this.courseDetailsRepo.findInAllFields(term)) {
 			courseDetailsList.add(courseDetail);
@@ -51,7 +56,8 @@ public class CourseSearch {
 	}
 
 	@RequestMapping(value = "/byName")
-	public String searchByCourseName(@RequestParam("c_name") String term, ModelMap map) {
+	public String searchByCourseName(@RequestParam("c_name") String term, HttpServletRequest request, ModelMap map) {
+		logger.debug("Requested URI: {} and Query String: {}", request.getRequestURI(), request.getQueryString());
 		List<CourseDetails> courseDetailsList = new ArrayList<>();
 		for (CourseDetails courseDetail : this.courseDetailsRepo.findByCourseName(term)) {
 			courseDetailsList.add(courseDetail);
@@ -64,24 +70,12 @@ public class CourseSearch {
 
 	@RequestMapping(value = "/facetSkills")
 	public String searchAllFacetOnSkills(@RequestParam("term") String term,
-			@PageableDefault(page = 0, size = 15) Pageable pageable, ModelMap map) {
-		FacetPage<CourseDetails> facetResults = this.courseDetailsRepo.findAllFacetOnSkills(term, pageable);
+			@PageableDefault(page = 0, size = 15) Pageable pageable, HttpServletRequest request, ModelMap map) {
+		logger.debug("Requested URI: {} and Query String: {}", request.getRequestURI(), request.getQueryString());
+		FacetPage<CourseDetails> facetResults = courseDetailsCustomRepo.customFindAllFacetOnSkills(term, pageable);
 		List<CourseDetails> resultsList = facetResults.getContent();
 		System.out.println("FacetResultsSize: " + facetResults.getSize());
 		for (Page<? extends FacetEntry> facetPage : facetResults.getAllFacets()) {
-			System.out.println("FacetPageSize: " + facetPage.getSize());
-			System.out.println("FacetPageNumber: " + facetPage.getNumber());
-			System.out.println("FacetPageNumberOfElements: " + facetPage.getNumberOfElements());
-			System.out.println("FacetPageTotalElements: " + facetPage.getTotalElements());
-			for (FacetEntry facetEntry : facetPage) {
-				System.out.println(facetEntry.getKey());
-				System.out.println(facetEntry.getValue() + " : " + facetEntry.getValueCount());
-			}
-		}
-
-		FacetPage<CourseDetails> facetResults2 = courseDetailsCustomRepo.customFindAllFacetOnSkills(term, pageable);
-		System.out.println("FacetResultsSize: " + facetResults2.getSize());
-		for (Page<? extends FacetEntry> facetPage : facetResults2.getAllFacets()) {
 			System.out.println("FacetPageSize: " + facetPage.getSize());
 			System.out.println("FacetPageNumber: " + facetPage.getNumber());
 			System.out.println("FacetPageNumberOfElements: " + facetPage.getNumberOfElements());

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Configuration status="warn">
+  <Properties>
+    <Property name="LOG_PATTERN">%d{yyyy-MM-dd HH:mm:ss.SSSZ} [%p] %c %m%n</Property>
+    <Property name="APP_LOG_ROOT">E:/Logs/Apache_Solr_Demonstration</Property>
+  </Properties>
+  
+  <Appenders>
+    <Console name="Console" target="SYSTEM_OUT">
+      <PatternLayout pattern="${LOG_PATTERN}" />
+    </Console>
+  
+	<RollingFile name="Solr_App_Log"
+      fileName="${APP_LOG_ROOT}/Solr_Demo_App.log"
+      filePattern="${APP_LOG_ROOT}/Archives/Solr_Demo_App-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout pattern="${LOG_PATTERN}" />
+      <Policies>
+      	<OnStartupTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="1MB" />
+        <TimeBasedTriggeringPolicy />
+      </Policies>
+      <DefaultRolloverStrategy max="5" />
+    </RollingFile>
+	
+	<RollingFile name="Spring_Logs"
+      fileName="${APP_LOG_ROOT}/Spring_Solr_Demo_App.log"
+      filePattern="${APP_LOG_ROOT}/Archives/Spring_Solr_Demo_App-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout pattern="${LOG_PATTERN}" />
+      <Policies>
+      	<OnStartupTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="1MB" />
+        <TimeBasedTriggeringPolicy />
+      </Policies>
+      <DefaultRolloverStrategy max="5" />
+    </RollingFile>
+	
+	<RollingFile name="Server_logs"
+      fileName="${APP_LOG_ROOT}/server_logs.log"
+      filePattern="${APP_LOG_ROOT}/Archives/server_logs-%d{yyyy-MM-dd}-%i.log.gz">
+      <PatternLayout pattern="${LOG_PATTERN}" />
+      <Policies>
+      	<OnStartupTriggeringPolicy />
+        <SizeBasedTriggeringPolicy size="1MB" />
+        <TimeBasedTriggeringPolicy />
+      </Policies>
+      <DefaultRolloverStrategy max="5" />
+    </RollingFile>
+  </Appenders>
+  
+  <Loggers>
+    <Logger name="learn.solr.search" level="debug">
+	  <AppenderRef ref="Solr_App_Log" />
+    </Logger>
+    <Logger name="org.springframework.data.solr.core.SolrTemplate" level="debug">
+	  <AppenderRef ref="Solr_App_Log" />
+    </Logger>
+    <Logger name="org.springframework" level="info" additivity="false">
+        <AppenderRef ref="Spring_Logs" />
+    </Logger>
+	<Logger name="org.apache.tomcat" level="debug" additivity="false">
+        <AppenderRef ref="Server_logs" />
+    </Logger>
+	    <Logger name="org.apache.catalina" level="debug" additivity="false">
+        <AppenderRef ref="Server_logs" />
+    </Logger>
+    <Root level="info">
+      <AppenderRef ref="Console" />
+    </Root>
+  </Loggers>
+</Configuration>

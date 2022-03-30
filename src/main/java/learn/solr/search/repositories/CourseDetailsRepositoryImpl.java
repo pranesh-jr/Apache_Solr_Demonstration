@@ -3,6 +3,8 @@ package learn.solr.search.repositories;
 import javax.annotation.Resource;
 
 import org.apache.solr.common.params.FacetParams.FacetRangeInclude;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.solr.core.SolrOperations;
 import org.springframework.data.solr.core.query.Criteria;
@@ -18,12 +20,12 @@ import learn.solr.search.documents.CourseDetails;
 
 @Service
 public class CourseDetailsRepositoryImpl implements CourseDetailsCustomRepository {
+	private static Logger logger = LoggerFactory.getLogger(CourseDetailsRepositoryImpl.class);
 	@Resource
 	SolrOperations solrTemplate;
 
 	@Override
 	public FacetPage<CourseDetails> findAllFacetOnCourseRating(String term, Pageable page) {
-		// TODO Auto-generated method stub
 		FacetOptions facetOptions = new FacetOptions()
 				.addFacetByRange(new FieldWithNumericRangeParameters("Course_Rating", 2, 5, 0.25).setHardEnd(true)
 						.setInclude(FacetRangeInclude.ALL));
@@ -47,8 +49,8 @@ public class CourseDetailsRepositoryImpl implements CourseDetailsCustomRepositor
 		return results;
 	}
 
-	private Criteria createSearchConditions(String searchWords) {
-		String[] searchWord = searchWords.split(" ");
+	private Criteria createSearchConditions(String searchTerm) {
+		String[] searchWords = searchTerm.split(" ");
 		Criteria conditions = null;
 		Criteria nameConditions = new Criteria("Course_Name").contains(searchWords);
 		Criteria descConditions = new Criteria("Course_Description").contains(searchWords);
@@ -57,7 +59,7 @@ public class CourseDetailsRepositoryImpl implements CourseDetailsCustomRepositor
 		Criteria univConditions = new Criteria("University").contains(searchWords);
 
 		conditions = nameConditions.or(descConditions).or(urlConditions).or(skillsConditions).or(univConditions);
-
+		logger.debug("Condition created: {}",conditions.toString());
 		return conditions;
 	}
 
