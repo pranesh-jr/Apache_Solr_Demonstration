@@ -22,6 +22,14 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v1
+    
     - name: Build with Maven
-      #run: mvn -B package --file pom.xml
-      run: mvn --batch-mode --update-snapshots verify
+      run: mvn -B package --file pom.xml
+      #run: mvn --batch-mode --update-snapshots verify
+      
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v1
